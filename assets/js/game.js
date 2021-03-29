@@ -31,7 +31,15 @@ playerHealth = playerHealth - enemyAttack;
     //Log a resulting message to the console so we know it worked.
     console.log(
         enemyName + " attacked " + playerName + ". " + playerName + " now has " + playerHealth + " health remaining."
-    )
+    );
+    //check players health
+    if (playerHealth <= 0) {
+        window.alert(playerName + " has died!");
+    }
+    else {
+        window.alert(playerName + " still has " + playerHealth + " health left.");
+    }
+
 };
 
 fight();
