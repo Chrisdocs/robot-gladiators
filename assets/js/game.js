@@ -4,52 +4,6 @@ var randomNumber = function(min, max) {
     return value;
     };
 
-var getPlayerName = function() {
-    var name = "";
-
-    while (name === "" || name === null) {
-        name = prompt("What is your robot's name?");
-        }
-
-    console.log("Your robot's name is " + name);
-        return name;
-};
-
-var playerInfo = {
-    name: getPlayerName(),
-    health: 100,
-    attack: 10,
-    money: 10,
-    reset: function() {
-        this.health = 100;
-        this.money = 10;
-        this.attack = 10;
-    },
-    refillHealth: function() {
-        this.health += 20;
-        this.money -= 7;
-    },
-    upgradeAttack: function() {
-        this.attack += 6;
-        this.money -= 7;
-    }
-};
-
-var enemyInfo = [
-    {
-        name: "Roboto",
-        attack: randomNumber(10, 14)
-    },
-    {
-        name: "Amy Android",
-        attack: randomNumber(10, 14)
-    },
-    {
-        name: "Robo Trumble",
-        attack: randomNumber(10, 14)
-    }
-];
-
 var fightOrSkip = function() {
     // ask player if they'd like to fight or skip using fightOrSkip function
     var promptFight = window.prompt('Would you like to FIGHT or SKIP this battle? Enter "FIGHT" or "SKIP" to choose.');
@@ -70,13 +24,12 @@ var fightOrSkip = function() {
         window.alert(playerInfo.name + " has decided to skip this fight. Goodbye!");
         // subtract money from playerMoney for skipping
         playerInfo.playerMoney = playerInfo.money - 10;
-        shop();
         //return true if player wants to leave
         return true;
         }
     }
     return false;
-};
+}
 
 // fight function
 var fight = function(enemy) {
@@ -134,6 +87,9 @@ var startGame = function() {
     playerInfo.reset();
 
     for (var i = 0; i < enemyInfo.length; i++) {
+        //check player stats
+        console.log(playerInfo);
+        //if player is still alive keep fighting
         if (playerInfo.health > 0) {
             window.alert("Welcome to Robot Gladiators! Round " + (i + 1) );
 
@@ -141,17 +97,18 @@ var startGame = function() {
 
             pickedEnemyObj.health = randomNumber(40, 60);
 
+            console.log(pickedEnemyObj);
+
             fight(pickedEnemyObj);
             // if player is still alive and we're not at the last enemy in the array
             if (playerInfo.health > 0 && i < enemyInfo.length - 1) {
                 //ask if player wants to use the store before the nest round
-                var storeConfirm = window.confirm("The fight is over, visit the store?");
+                var storeConfirm = window.confirm("The fight is over, visit the store before the next round?");
                 //if yes, take them to the store() function
                 if (storeConfirm) {
                 shop();
                 }
             }
-
         }
         else {
             window.alert("You have lost your robot in battle!  Game Over!");
@@ -180,34 +137,76 @@ var endGame = function() {
 var shop = function() {
     //ask player what they would like to do
     var shopOptionPrompt = window.prompt(
-        "Would you like to REFILL your health, UPGRADE your attack, or LEAVE the store?  Please enter one: 'REFILL', 'Upgrade', or 'LEAVE' to make a choice."
-    );
+        "Would you like to REFILL your health, UPGRADE your attack, or LEAVE the store? Please enter one 1 for REFILL, 2 for UPGRADE, or 3 for LEAVE."
+        );
+        
+    shopOptionPrompt = parseInt(shopOptionPrompt);
     //use switch to carry out action
     switch (shopOptionPrompt) {
-        case "refill": // new case
-        case "REFILL":
+        case 1:
             playerInfo.refillHealth();
             break;
 
-        case "upgrade": //new case
-        case "UPGRADE":
+        case 2:
             playerInfo.upgradeAttack();
             break;
-        case "leave": //new case
-        case "LEAVE":
 
-            window.alert ("leaving the store.");
-
-            //do nothing, so function will end
+        case 3:
+            window.alert("leaving the store.");
             break;
-        default:
-            window.alert ("You did not pick a valid option, try again.");
 
-            //call shop() again to force player to pick a valid option
+        default:
+            window.alert("You did not pick a valid option, try again.");
             shop();
             break;
     }
-//function to generate a random numeric value
 };
+
+var getPlayerName = function() {
+    var name = "";
+
+    while (name === "" || name === null) {
+        name = prompt("What is your robot's name?");
+        }
+
+    console.log("Your robot's name is " + name);
+        return name;
+};
+
+var playerInfo = {
+    name: getPlayerName(),
+    health: 100,
+    attack: 10,
+    money: 10,
+    reset: function() {
+        this.health = 100;
+        this.money = 10;
+        this.attack = 10;
+    },
+    refillHealth: function() {
+        this.health += 20;
+        this.money -= 7;
+    },
+    upgradeAttack: function() {
+        this.attack += 6;
+        this.money -= 7;
+    }
+};
+
+var enemyInfo = [
+    {
+        name: "Roboto",
+        attack: randomNumber(10, 14)
+    },
+    {
+        name: "Amy Android",
+        attack: randomNumber(10, 14)
+    },
+    {
+        name: "Robo Trumble",
+        attack: randomNumber(10, 14)
+    }
+];
+
 //start the game when page loads
 startGame();
